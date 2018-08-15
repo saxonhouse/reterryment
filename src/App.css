@@ -1,0 +1,10 @@
+.hall-avatar {
+  max-height: 102px;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display');
+
+.title {
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+}
