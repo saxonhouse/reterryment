@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { setUser } from './reducer'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link, withRouter } from 'react-router-dom'
 import './App.css';
 
 const AvatarURLs = [
@@ -102,6 +102,8 @@ class AppHeader extends Component {
 
   render() {
     const title = "The Hall Report";
+    const newpost = this.props.newPost
+    console.log(newpost)
     if (this.state.logout) {
        return <Redirect to='/' />;
     }
@@ -132,7 +134,9 @@ class AppHeader extends Component {
                 <Box width={[1/2, 2/3]} ml='auto'>
                   <Text> Welcome back, {this.props.user}! </Text>
                   <Divider />
-                  <ButtonCircle> New Blog Post </ButtonCircle>
+                  <Link to='/new-post' >
+                    <ButtonCircle opacity={newpost ? 0.5 : 1}> New Post </ButtonCircle>
+                  </Link>
                   <ButtonCircle onClick={this.logout} > Logout </ButtonCircle>
                 </Box>
               </Flex>
@@ -146,7 +150,7 @@ class AppHeader extends Component {
 function mapStateToProps(state) {
   return {
     loggedIn: state.loggedIn,
-    user: state.user
+    user: state.user,
   };
 };
 

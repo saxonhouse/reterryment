@@ -6,6 +6,7 @@ export function userReducer(state={}, action) {
       return Object.assign({}, state, {
         loggedIn: action.loggedIn,
         user: action.user,
+        token: action.token
       })
       break;
     default:
@@ -13,10 +14,11 @@ export function userReducer(state={}, action) {
   }
 }
 
-export function setUser(loggedIn, user) {
+export function setUser(loggedIn, user, token) {
   return {
     type: 'SET_USER',
     loggedIn,
     user,
+    token
   }
 }

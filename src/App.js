@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Provider, Flex, Box, Heading } from 'rebass';
 import AppHeader from './AppHeader';
-import { AppBody } from './AppBody';
 import BlogHome from './BlogHome';
 import BlogPost from './BlogPost';
 import { injectGlobal } from 'styled-components'

@@ -2,20 +2,23 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { Container, Header, Segment } from 'semantic-ui-react';
 import axios from 'axios';
+import { connect } from 'react-redux'
 
-class BlogHome extends Component {
+class PostList extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       loaded: false
     };
   }
 
   fetchPosts(page) {
-    let url = 'http://localhost:8000/api/?page=' + page;
-    axios.get(url).then((res) => {
+    let url = 'http://localhost:8000/api/?page='
+    if (this.props.draft) {
+      url = 'http://localhost:8000/api/drafts/?author=' + this.props.user + '&page='
+    }
+    axios.get(url + page).then((res) => {
       this.setState({
         loaded: true,
         resp: res.data
@@ -39,13 +42,14 @@ class BlogHome extends Component {
     if (this.state.loaded) {
       const next_page = this.state.resp.next;
       const previous_page = this.state.resp.previous;
-
       return (
         <div>
           {this.state.resp.results.map((post) => {
+            let type = ''
+            post.isPublished? type = 'post' : type='draft'
             return (
               <div key={post.id}>
-                <Link to={`/post/${post.id}`}>
+                <Link to={`/${type}/${post.id}`}>
                   <Header as='h2'>{post.title}</Header>
                 </Link>
                 <p>{post.summary}</p>
@@ -72,5 +76,11 @@ class BlogHome extends Component {
     }
   }
 }
+function mapStateToProps(state) {
+  return {
+    loggedIn: state.loggedIn,
+    user: state.user,
+  };
+};
 
-export default BlogHome;
+export default connect(mapStateToProps)(PostList)

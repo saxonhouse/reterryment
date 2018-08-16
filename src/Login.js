@@ -37,7 +37,7 @@ class Login extends Component {
       password: this.state.password
     }).then((res) => {
       console.log(res)
-      this.props.setUser(true, res.data.user)
+      this.props.setUser(true, res.data.user, res.data.token)
       console.log(this.props)
       let user = {user: res.data.user, token: res.data.token}
       localStorage.setItem('user', JSON.stringify(user))
