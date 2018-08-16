@@ -8,3 +8,19 @@
   font-family: 'Playfair Display', serif;
   text-align: center;
 }
+
+.login-box {
+  margin: auto;
+}
+
+.login-input {
+  border: 1px solid gray;
+}
+
+.background {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(288deg, rgba(2,0,36,1) 0%, rgba(185,185,203,0.46820726581648286) 0%, rgba(161,207,217,0.39257701371564246) 100%);
+}

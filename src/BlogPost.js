@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Butter from 'buttercms'
 import { Container, Provider, Flex, Box, Heading } from 'rebass';
 import axios from 'axios';
 
@@ -15,7 +14,7 @@ class BlogPost extends Component {
   }
 
   componentWillMount() {
-    let id = this.props.params.id;
+    let id = this.props.match.params.id;
     let url = 'http://localhost:8000/api/' + id;
     axios.get(url).then((res) => {
       console.log(res)

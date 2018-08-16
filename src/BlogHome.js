@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router'
-import Butter from 'buttercms'
+import { Link } from 'react-router-dom'
 import { Container, Header, Segment } from 'semantic-ui-react';
 import axios from 'axios';
-
-const butter = Butter('6d7db31c47e2c50d2e7b390c83d64b076b06aa06');
 
 class BlogHome extends Component {
 
@@ -19,7 +16,6 @@ class BlogHome extends Component {
   fetchPosts(page) {
     let url = 'http://localhost:8000/api/?page=' + page;
     axios.get(url).then((res) => {
-      console.log(res)
       this.setState({
         loaded: true,
         resp: res.data
@@ -29,7 +25,8 @@ class BlogHome extends Component {
 
 
   componentWillMount() {
-    let page = this.props.params.page || 1;
+    console.log(this.props.match.path) // /topics/:topicId/:subId
+    let page = this.props.match.params.page || 1;
 
     this.fetchPosts(page)
   }
@@ -37,7 +34,7 @@ class BlogHome extends Component {
   componentWillReceiveProps(nextProps) {
     this.setState({loaded: false});
 
-    let page = nextProps.params.page || 1;
+    let page = nextProps.match.params.page || 1;
 
     this.fetchPosts(page)
   }

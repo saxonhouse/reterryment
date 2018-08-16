@@ -1,18 +1,31 @@
-import React from 'react';
-import { Router, IndexRoute, Route } from 'react-router';
-
+import React, {Component} from 'react'
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute'
+import Login from './Login';
 import App from './App';
 import BlogHome from './BlogHome';
 import BlogPost from './BlogPost';
+import { AppBody } from './AppBody';
 
-const Routes = (props) => (
-  <Router {...props}>
-    <Route path="/" component={App}>
-      <IndexRoute component={BlogHome} />
-      <Route path="/p/:page" component={BlogHome} />
-      <Route path="/post/:id" component={BlogPost} />
-    </Route>
-  </Router>
-);
+export class Routes extends Component {
+  constructor(props) {
+    super(props)
+  }
 
-export default Routes;
+  render() {
+    return (
+      <Switch>
+        <Route exact path='/' render={(props) => (
+          <App> <BlogHome {...props} /> </App>
+        )}/>
+        <Route path='/post/:id' render={(props) => (
+          <App> <BlogPost {...props} /> </App>
+        )}/>
+        <Route path='/p/:page' render={(props) => (
+          <App> <BlogHome {...props} /> </App>
+        )}/>
+        <Route exact path='/login' component={Login} />
+      </Switch>
+    )
+  }
+}

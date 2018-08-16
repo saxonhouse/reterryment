@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Container, Provider, Flex, Box, Heading, Image, Text, Divider, ButtonCircle } from 'rebass';
-import { Avatar } from 'avataaars';
 import posed from "react-pose";
 import styled from "styled-components";
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { setUser } from './reducer'
+import { Redirect } from 'react-router-dom'
 import './App.css';
 
 const AvatarURLs = [
@@ -60,7 +63,7 @@ const avatarConfig = {
 const Header = posed.div(staggerConfig);
 const AnimAvatar = styled(posed.div(avatarConfig))`max-height: 120px`;
 
-const GradientHeading = styled(Heading)`
+export const GradientHeading = styled(Heading)`
   background-image: linear-gradient(to bottom right, #66ccff 0%, #ff99ff 100%)`
 
 const Avatars = AvatarURLs.map((hall) => {
@@ -73,26 +76,35 @@ const Avatars = AvatarURLs.map((hall) => {
   )
 })
 
-export class AppHeader extends Component {
+class AppHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
       mounted: false,
-      hall: 'Theresa',
     }
+    this.logout = this.logout.bind(this)
   }
 
   componentDidMount() {
-    this.setState({mounted: true})
     for (const hall of AvatarURLs) {
-      if(hall.name == this.state.hall) {
+      if(hall.name === this.props.user) {
         this.setState({avatar: hall.url})
       }
     }
+    this.setState({mounted: true})
+  }
+
+  logout() {
+    this.props.setUser()
+    localStorage.setItem('user', null)
+    this.setState({logout: true})
   }
 
   render() {
     const title = "The Hall Report";
+    if (this.state.logout) {
+       return <Redirect to='/' />;
+    }
     return (
       <Header pose={this.state.mounted ? 'in' : 'out'}>
         <Flex px={[0, 2, 5]} flexWrap='wrap' mb={3} alignItems='center'>
@@ -118,9 +130,10 @@ export class AppHeader extends Component {
                   <Image px={3} src={this.state.avatar} />
                 </Box>
                 <Box width={[1/2, 2/3]} ml='auto'>
-                  <Text> Welcome back, {this.state.hall}! </Text>
+                  <Text> Welcome back, {this.props.user}! </Text>
                   <Divider />
                   <ButtonCircle> New Blog Post </ButtonCircle>
+                  <ButtonCircle onClick={this.logout} > Logout </ButtonCircle>
                 </Box>
               </Flex>
             </FlyInRight>
@@ -130,3 +143,17 @@ export class AppHeader extends Component {
     )
   }
 }
+function mapStateToProps(state) {
+  return {
+    loggedIn: state.loggedIn,
+    user: state.user
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return (
+    bindActionCreators({setUser: setUser}, dispatch)
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppHeader)
