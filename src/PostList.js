@@ -14,11 +14,11 @@ class PostList extends Component {
   }
 
   fetchPosts(page) {
-    let url = 'http://localhost:8000/api/?page='
+    let url = 'http://localhost:8000/api/?page=' + page
     if (this.props.draft) {
-      url = 'http://localhost:8000/api/drafts/?author=' + this.props.user + '&page='
+      url = 'http://localhost:8000/api/drafts/?author=' + this.props.user + '&page=' + page
     }
-    axios.get(url + page).then((res) => {
+    axios.get(url).then((res) => {
       this.setState({
         loaded: true,
         resp: res.data
@@ -28,6 +28,7 @@ class PostList extends Component {
 
 
   componentWillMount() {
+    this.setState({loaded: false});
     let page = this.props.match.params.page || 1;
     this.fetchPosts(page)
   }
@@ -40,8 +41,25 @@ class PostList extends Component {
 
   render() {
     if (this.state.loaded) {
-      const next_page = this.state.resp.next;
-      const previous_page = this.state.resp.previous;
+      var next_page = ''
+      var previous_page = ''
+      if (this.state.resp.next) {
+        next_page = this.state.resp.next.split('=').slice(-1)[0]
+      }
+      if (this.state.resp.previous) {
+        previous_page = this.state.resp.previous.split('=')
+        if (previous_page.length < 3) {
+          previous_page = '1'
+        }
+        else {
+          previous_page = previous_page.slice(-1)[0]
+        }
+        console.log(previous_page)
+      }
+      var domain = '/p/'
+      if (this.props.draft) {
+        domain = '/my-drafts/'
+      }
       return (
         <div>
           {this.state.resp.results.map((post) => {
@@ -61,9 +79,9 @@ class PostList extends Component {
           <br />
 
           <div>
-            {previous_page && <Link to={`/p/${previous_page}`}>Prev</Link>}
+            {previous_page && <Link to={`${domain}${previous_page}`}>Prev</Link>}
 
-            {next_page && <Link to={`/p/${next_page}`}>Next</Link>}
+            {next_page && <Link to={`${domain}${next_page}`}>Next</Link>}
           </div>
         </div>
       );

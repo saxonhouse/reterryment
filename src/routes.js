@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './Login';
+import Logout from './Logout';
 import App from './App';
 import PostList from './PostList';
 import BlogPost from './BlogPost';
 import NewPost from './NewPost';
+
 
 export class Routes extends Component {
   constructor(props) {
@@ -26,6 +28,9 @@ export class Routes extends Component {
         <Route exact path='/my-drafts' render={(props) => (
           <App> <PostList draft={true} {...props} /> </App>
         )}/>
+        <Route path='/my-drafts/:page' render={(props) => (
+          <App> <PostList draft={true} {...props} /> </App>
+        )}/>
         <Route exact path='/draft/:id' render={(props) => (
           <App> <BlogPost draft={true} {...props} /> </App>
         )}/>
@@ -33,6 +38,7 @@ export class Routes extends Component {
           <App> <NewPost {...props} /> </App>
         )}/>
         <Route path='/login' component={Login} />
+        <Route path='/logout' component={Logout} />
       </Switch>
     )
   }

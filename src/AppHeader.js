@@ -82,7 +82,6 @@ class AppHeader extends Component {
     this.state = {
       mounted: false,
     }
-    this.logout = this.logout.bind(this)
   }
 
   componentDidMount() {
@@ -94,19 +93,10 @@ class AppHeader extends Component {
     this.setState({mounted: true})
   }
 
-  logout() {
-    this.props.setUser()
-    localStorage.setItem('user', null)
-    this.setState({logout: true})
-  }
 
   render() {
     const title = "The Hall Report";
     const newpost = this.props.newPost
-    console.log(newpost)
-    if (this.state.logout) {
-       return <Redirect to='/' />;
-    }
     return (
       <Header pose={this.state.mounted ? 'in' : 'out'}>
         <Flex px={[0, 2, 5]} flexWrap='wrap' mb={3} alignItems='center'>
@@ -137,7 +127,12 @@ class AppHeader extends Component {
                   <Link to='/new-post' >
                     <ButtonCircle opacity={newpost ? 0.5 : 1}> New Post </ButtonCircle>
                   </Link>
-                  <ButtonCircle onClick={this.logout} > Logout </ButtonCircle>
+                  <Link to='/my-drafts' >
+                    <ButtonCircle opacity={newpost ? 0.5 : 1}> My Drafts </ButtonCircle>
+                  </Link>
+                  <Link to='/logout' >
+                    <ButtonCircle> Logout </ButtonCircle>
+                  </Link>
                 </Box>
               </Flex>
             </FlyInRight>
