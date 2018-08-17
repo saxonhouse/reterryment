@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Container, Provider, Flex, Box, Heading } from 'rebass';
+import posed from 'react-pose';
 import AppHeader from './AppHeader';
-import BlogHome from './BlogHome';
+import PostList from './PostList';
 import BlogPost from './BlogPost';
+import NewPost from './NewPost';
 import { injectGlobal } from 'styled-components'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
@@ -15,9 +17,21 @@ injectGlobal`
   body, html {height:100%;}
   body { margin: 0; }
 `
+const AppDiv = posed.div({
+  out: {},
+  in: {staggerChildren: 100},
+  })
 
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {pose: 'out'}
+  }
+
+  componentDidMount() {
+    this.setState({pose: 'in'})
+  }
 
   render() {
     if (!this.props.loggedIn) {
@@ -26,12 +40,12 @@ class App extends Component {
       )
     }
     return (
-      <div className="App">
-        <Container  >
-            <AppHeader />
-            {this.props.children}
+      <AppDiv pose={this.state.pose} className="App">
+        <Container >
+            <AppHeader newPost={this.props.newPost} />
+            {this.props.newPost ? <NewPost /> : this.props.list ? <PostList match={this.props.match} author={this.props.author} draft={this.props.draft} /> : <BlogPost match={this.props.match} draft={this.props.draft}/> }
         </Container>
-      </div>
+      </AppDiv>
     );
   }
 }

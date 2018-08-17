@@ -17,6 +17,14 @@
   border: 1px solid gray;
 }
 
+.list-post {
+  overflow: hidden;
+}
+
+.next-link {
+  text-align: right;
+}
+
 .background {
   width: 100%;
   height: 100%;

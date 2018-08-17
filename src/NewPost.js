@@ -3,7 +3,13 @@ import { Container, Input, Provider, Flex, Box, Heading, Image, Text, Divider, B
 import RichTextEditor from 'react-rte-image';
 import { connect } from 'react-redux'
 import axios from 'axios'
+import posed from 'react-pose'
 import './App.css';
+
+const NewPostDiv = posed.div({
+  out: {height: 0, overflow: 'hidden'},
+  in: {height: '100%', overflow: 'visible', transition: {duration: 1000}}
+})
 
 class NewPost extends Component {
   constructor(props) {
@@ -20,7 +26,7 @@ class NewPost extends Component {
   }
 
   componentDidMount() {
-
+    this.setState({posed: true})
   }
 
   update(isPublished) {
@@ -77,7 +83,7 @@ class NewPost extends Component {
 
   render() {
     return(
-      <div>
+      <NewPostDiv pose={this.state.posed? 'in' : 'out'}>
         <div> New Post </div>
         <Input onChange={this.onTitleChange} placeHolder="Title" />
         <RichTextEditor
@@ -86,7 +92,7 @@ class NewPost extends Component {
         />
         <ButtonCircle onClick={this.saveDraft} children="Save Draft" />
         <ButtonCircle onClick={this.publishPost} children="Publish" />
-      </div>
+      </NewPostDiv>
     )
   }
 }

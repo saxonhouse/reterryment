@@ -3,9 +3,6 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './Login';
 import Logout from './Logout';
 import App from './App';
-import PostList from './PostList';
-import BlogPost from './BlogPost';
-import NewPost from './NewPost';
 
 
 export class Routes extends Component {
@@ -16,26 +13,29 @@ export class Routes extends Component {
   render() {
     return (
       <Switch>
-        <Route exact path='/' render={(props) => (
-          <App> <PostList {...props} /> </App>
+        <Route exact path='/' render={({match}) => (
+          <App list={true } match={match} {...this.props} />
         )}/>
-        <Route path='/post/:id' render={(props) => (
-          <App> <BlogPost {...props} /> </App>
+        <Route path='/p/:page' render={({match}) => (
+          <App list={true} match={match} {...this.props} />
         )}/>
-        <Route path='/p/:page' render={(props) => (
-          <App> <PostList {...props} /> </App>
+        <Route path='/post/:id' render={({match}) => (
+          <App match={match} {...this.props} />
         )}/>
-        <Route exact path='/my-drafts' render={(props) => (
-          <App> <PostList draft={true} {...props} /> </App>
+        <Route exact path='/my-drafts' render={({match}) => (
+          <App match={match} list={true} draft={true} {...this.props} />
         )}/>
-        <Route path='/my-drafts/:page' render={(props) => (
-          <App> <PostList draft={true} {...props} /> </App>
+        <Route path='/my-drafts/:page' render={({match}) => (
+          <App list={true} draft={true} match={match} {...this.props} />
         )}/>
-        <Route exact path='/draft/:id' render={(props) => (
-          <App> <BlogPost draft={true} {...props} /> </App>
+        <Route exact path='/draft/:id' render={({match}) => (
+          <App match={match} draft={true} {...this.props} />
         )}/>
-        <Route path='/new-post' render={(props) => (
-          <App> <NewPost {...props} /> </App>
+        <Route path='/new-post' render={({match}) => (
+          <App match={match} newPost={true} {...this.props} />
+        )}/>
+        <Route path='/author/:name' render={({match}) => (
+          <App match={match} author={true} list={true} {...this.props} />
         )}/>
         <Route path='/login' component={Login} />
         <Route path='/logout' component={Logout} />

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Provider, Flex, Box, Heading, Image, Text, Divider, ButtonCircle } from 'rebass';
+import { Container, Provider, Flex, Box, Heading, Image, Text, Divider, ButtonCircle,
+  Row, Column, Hide } from 'rebass';
 import posed from "react-pose";
 import styled from "styled-components";
 import { bindActionCreators } from 'redux'
@@ -35,32 +36,26 @@ const AvatarURLs = [
   },
 ]
 
-const staggerConfig = {
-  'out' : {},
-  'in' : {staggerChildren: 100}
-}
-
 const FlyIn = posed.div({
-  'out': {position: 'relative',
+  out: {position: 'relative',
         left: -1000},
-  'in': { left: 0,
+  in: { left: 0,
         transition: { duration: 500 }}
 })
 
 const FlyInRight = posed.div({
-  'out': {position: 'relative',
+  out: {position: 'relative',
         right: -1000},
-  'in': { right: 0,
+  in: { right: 0,
         transition: { duration: 500 }}
 })
 
 const avatarConfig = {
-  'out' : {opacity: 0},
-  'in' : {opacity: 0.8,
+  out : {opacity: 0},
+  in : {opacity: 0.8,
           transition: { duration: 300 }}
 }
 
-const Header = posed.div(staggerConfig);
 const AnimAvatar = styled(posed.div(avatarConfig))`max-height: 120px`;
 
 export const GradientHeading = styled(Heading)`
@@ -69,9 +64,11 @@ export const GradientHeading = styled(Heading)`
 const Avatars = AvatarURLs.map((hall) => {
   return(
     <Box width={[1/4, 1/8]} key={hall.name}>
-      <AnimAvatar>
-        <Image src={hall.url} className="hall-avatar" />
-      </AnimAvatar>
+      <Link to={`/author/${hall.name}`}>
+        <AnimAvatar>
+          <Image src={hall.url} className="hall-avatar" />
+        </AnimAvatar>
+      </Link>
     </Box>
   )
 })
@@ -96,23 +93,25 @@ class AppHeader extends Component {
 
   render() {
     const title = "The Hall Report";
-    const newpost = this.props.newPost
+    const newPost = this.props.newPost
     return (
-      <Header pose={this.state.mounted ? 'in' : 'out'}>
+      <div>
         <Flex px={[0, 2, 5]} flexWrap='wrap' mb={3} alignItems='center'>
           {Avatars}
         </Flex>
         <Flex alignItems='center' mb={50}>
           <Box width={1/2}>
             <FlyIn>
-              <GradientHeading
-                py={4}
-                px={2}
-                fontSize={[ 5, 6 ]}
-                color='white'
-                >
-                <p className='title'>{title}</p>
-              </GradientHeading>
+              <Link to='/'>
+                <GradientHeading
+                  py={4}
+                  px={2}
+                  fontSize={[ 5, 6 ]}
+                  color='white'
+                  >
+                  <p className='title'>{title}</p>
+                </GradientHeading>
+              </Link>
             </FlyIn>
           </Box>
           <Box width={1/2}>
@@ -122,23 +121,31 @@ class AppHeader extends Component {
                   <Image px={3} src={this.state.avatar} />
                 </Box>
                 <Box width={[1/2, 2/3]} ml='auto'>
-                  <Text> Welcome back, {this.props.user}! </Text>
-                  <Divider />
-                  <Link to='/new-post' >
-                    <ButtonCircle opacity={newpost ? 0.5 : 1}> New Post </ButtonCircle>
-                  </Link>
-                  <Link to='/my-drafts' >
-                    <ButtonCircle opacity={newpost ? 0.5 : 1}> My Drafts </ButtonCircle>
-                  </Link>
-                  <Link to='/logout' >
-                    <ButtonCircle> Logout </ButtonCircle>
-                  </Link>
+                <Text> Welcome back, {this.props.user}! </Text>
+                <Divider />
+                  <Flex flexWrap='wrap'>
+                    <Box width={[1, 1/3]}>
+                      <Link to='/new-post' >
+                        <ButtonCircle mx={[0, 'auto']} pb={1} opacity={newPost ? 0.5 : 1}> New Post </ButtonCircle>
+                      </Link>
+                    </Box>
+                    <Box width={[1, 1/3]}>
+                      <Link to='/my-drafts' >
+                        <ButtonCircle  mx={[0, 'auto']} pb={1} opacity={newPost ? 0.5 : 1}> My Drafts </ButtonCircle>
+                      </Link>
+                    </Box>
+                    <Box width={[1, 1/3]}>
+                      <Link to='/logout' >
+                        <ButtonCircle  mx={[0, 'auto']} pb={1}> Logout </ButtonCircle>
+                      </Link>
+                    </Box>
+                  </Flex>
                 </Box>
               </Flex>
             </FlyInRight>
           </Box>
         </Flex>
-      </Header>
+      </div>
     )
   }
 }

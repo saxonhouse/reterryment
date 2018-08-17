@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "avataaars": "^1.1.0",
+    "decode-html": "^2.0.0",
+    "moment": "^2.22.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-helmet": "^5.2.0",
