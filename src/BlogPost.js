@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Container, Provider, Flex, Box, Heading } from 'rebass';
+import { Container, Provider, Flex, Box, Heading, Border, Divider, Text } from 'rebass';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom'
+var moment = require('moment');
 
 
 class BlogPost extends Component {
@@ -35,11 +37,19 @@ class BlogPost extends Component {
 
       return (
         <div>
+        <Border borderColor='#dadbfa' p={3} my={1}>
           <Flex>
-            <Heading textAlign='center' attached='top'>{post.title}</Heading>
-            <p> {post.author} </p>
-            <div dangerouslySetInnerHTML={{__html: post.content}} />
+            <Box width={[4/5]} px={2}>
+              <Heading as='h2'>{post.title}</Heading>
+              <Divider borderColor='#dadbfa' />
+              <Text> post.content </Text>
+            </Box>
+            <Box width={[1/5]}>
+              {!this.props.draft && <Text> <Link to={`/author/${post.author}`} children={post.author}/> </Text> }
+              <Text children={moment(post.updated_at).format('MMM Do [\']YY')} />
+            </Box>
           </Flex>
+        </Border>
         </div>
       );
     } else {

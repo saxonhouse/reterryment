@@ -9,6 +9,14 @@
   text-align: center;
 }
 
+.small-title {
+  font-size: 35px;
+}
+
+.center {
+  text-align: center;
+}
+
 .login-box {
   margin: auto;
 }

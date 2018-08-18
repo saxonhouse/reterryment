@@ -54,7 +54,7 @@ class Login extends Component {
       <div className="background">
       <Provider>
         <Container width={1} height={1} >
-          <Heading className="title" textAlign='center' pt={20} mb={80}> Login </Heading>
+          <Heading color="blue" className="login-title" textAlign='center' pt={20} mb={80}> Login </Heading>
           <Box className='login-box' width={[1, 2/3, 1/2, 2/5]} py={2} px={3} >
             <form onSubmit={this.handleSubmit}>
               <Input mt={4} placeHolder={'Username'} onChange={this.usernameChange} />

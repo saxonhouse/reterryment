@@ -53,7 +53,10 @@ const FlyInRight = posed.div({
 const avatarConfig = {
   out : {opacity: 0},
   in : {opacity: 0.8,
-          transition: { duration: 300 }}
+          transition: { duration: 300 }},
+  spring: {position: 'relative',
+          bottom: -20,
+          transition: {type: 'spring', sitffness: 100}}
 }
 
 const AnimAvatar = styled(posed.div(avatarConfig))`max-height: 120px`;
@@ -62,10 +65,11 @@ export const GradientHeading = styled(Heading)`
   background-image: linear-gradient(to bottom right, #66ccff 0%, #ff99ff 100%)`
 
 const Avatars = AvatarURLs.map((hall) => {
+  let bounce =false;
   return(
     <Box width={[1/4, 1/8]} key={hall.name}>
       <Link to={`/author/${hall.name}`}>
-        <AnimAvatar>
+        <AnimAvatar pose={bounce} onMouseEnter={function() {bounce = true}} onMouseLeave={function() {bounce = false}}>
           <Image src={hall.url} className="hall-avatar" />
         </AnimAvatar>
       </Link>
@@ -92,8 +96,9 @@ class AppHeader extends Component {
 
 
   render() {
-    const title = "The Hall Report";
     const newPost = this.props.newPost
+    const titles = ['That\s Hall, Folks', 'News <span class="small-title">of the</span> Hall', 'Hall Aboard!', 'The Hall Report']
+    const title = title[Math.floor(Math.random()*title.length)]
     return (
       <div>
         <Flex px={[0, 2, 5]} flexWrap='wrap' mb={3} alignItems='center'>
@@ -106,10 +111,11 @@ class AppHeader extends Component {
                 <GradientHeading
                   py={4}
                   px={2}
-                  fontSize={[ 5, 6 ]}
+                  fontSize={[ 4, 6 ]}
+                  className='center'
                   color='white'
                   >
-                  <p className='title'>{title}</p>
+                  {title}
                 </GradientHeading>
               </Link>
             </FlyIn>

@@ -30,17 +30,24 @@ class NewPost extends Component {
   }
 
   update(isPublished) {
+    this.setState({saving: true})
     axios.put('http://localhost:8000/api/draft/' + this.state.id +'/', {
       author: this.props.user,
       title: this.state.title,
       content: this.state.body.toString('html'),
       isPublished: isPublished
-    }).then((res) => {
+    }).then(res => {
+      this.setState({saving: false, errorSaving: false})
       console.log(res)
-    }).catch(err => console.log(err))
+    }).catch(err => {
+      console.log(err)
+      this.setState({errorSaving: true})
+    }
+    )
   }
 
   firstSave(isPublished) {
+    this.setState({saving: true})
     axios.post('http://localhost:8000/api/', {
       title: this.state.title,
       author: this.state.body.toString('html'),
@@ -48,9 +55,12 @@ class NewPost extends Component {
       isPublished: isPublished
     }).then((res) => {
       console.log(res)
-      this.setState({saved: true, id: res.data.id})
+      this.setState({saved: true, saving: false, errorSaving: false, id: res.data.id})
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      this.setState({errorSaving: true})
+    })
   }
 
   saveDraft() {
@@ -84,14 +94,15 @@ class NewPost extends Component {
   render() {
     return(
       <NewPostDiv pose={this.state.posed? 'in' : 'out'}>
+        <div>{!this.state.saved? 'Not saved' : this.state.saving? 'Saving Draft...' : this.state.errorSaving? 'Oops! Error saving' : 'Draft Saved' }</div>
         <div> New Post </div>
         <Input onChange={this.onTitleChange} placeHolder="Title" />
         <RichTextEditor
           value={this.state.body}
           onChange={this.onBodyChange}
         />
-        <ButtonCircle onClick={this.saveDraft} children="Save Draft" />
-        <ButtonCircle onClick={this.publishPost} children="Publish" />
+        <ButtonCircle mr={3} onClick={this.saveDraft} children="Save Draft" />
+        <ButtonCircle mx={3} onClick={this.publishPost} children="Publish" />
       </NewPostDiv>
     )
   }
