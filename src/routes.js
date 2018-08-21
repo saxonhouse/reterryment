@@ -34,6 +34,9 @@ export class Routes extends Component {
         <Route path='/new-post' render={({match}) => (
           <App match={match} newPost={true} {...this.props} />
         )}/>
+        <Route path='/edit-post/:id' render={({match}) => (
+          <App match={match} newPost={true} {...this.props} />
+        )}/>
         <Route path='/author/:name' render={({match}) => (
           <App match={match} author={true} list={true} {...this.props} />
         )}/>

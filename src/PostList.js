@@ -55,7 +55,8 @@ class PostList extends Component {
       this._asyncRequest = null
       this.setState({
         loaded: true,
-        resp: res.data
+        resp: res.data,
+        noPosts: false
       })
       if (res.data.results.length == 0) {
         this.setState({noPosts: true})
@@ -89,6 +90,7 @@ class PostList extends Component {
       var domain = this.props.draft? '/my-drafts/' : '/p/'
       return (
         <ListDiv>
+          <NavLinks domain={domain} next={next_page} prev={previous_page} />
           <PoseGroup animateOnMount={true}>
             {this.state.resp.results.map((post, i) => {
               let type = ''

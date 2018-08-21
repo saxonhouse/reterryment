@@ -53,10 +53,12 @@ const FlyInRight = posed.div({
 const avatarConfig = {
   out : {opacity: 0},
   in : {opacity: 0.8,
+        y: 0,
           transition: { duration: 300 }},
-  spring: {position: 'relative',
-          bottom: -20,
-          transition: {type: 'spring', sitffness: 100}}
+  bounce: {position: 'relative',
+          opacity: 1,
+          y: 10,
+          transition: {type: 'spring', sitffness: 700}}
 }
 
 const AnimAvatar = styled(posed.div(avatarConfig))`max-height: 120px`;
@@ -64,16 +66,38 @@ const AnimAvatar = styled(posed.div(avatarConfig))`max-height: 120px`;
 export const GradientHeading = styled(Heading)`
   background-image: linear-gradient(to bottom right, #66ccff 0%, #ff99ff 100%)`
 
+class PosedAvatar extends Component {
+  constructor(props) {
+    super(props)
+    this.state ={bounce: false}
+    this.enter = this.enter.bind(this)
+    this.leave = this.leave.bind(this)
+  }
+
+  enter() {
+    this.setState({bounce: true})
+  }
+
+  leave() {
+    this.setState({bounce: false})
+  }
+
+  render() {
+    return(
+      <Box width={[1/4, 1/8]} key={this.props.hall.name}>
+        <Link to={`/author/${this.props.hall.name}`}>
+          <AnimAvatar pose={this.state.bounce? 'bounce':'in'} onMouseEnter={this.enter} onMouseLeave={this.leave}>
+            <Image src={this.props.hall.url} className="hall-avatar" />
+          </AnimAvatar>
+        </Link>
+      </Box>
+    )
+  }
+}
+
 const Avatars = AvatarURLs.map((hall) => {
-  let bounce =false;
   return(
-    <Box width={[1/4, 1/8]} key={hall.name}>
-      <Link to={`/author/${hall.name}`}>
-        <AnimAvatar pose={bounce} onMouseEnter={function() {bounce = true}} onMouseLeave={function() {bounce = false}}>
-          <Image src={hall.url} className="hall-avatar" />
-        </AnimAvatar>
-      </Link>
-    </Box>
+    <PosedAvatar hall={hall} />
   )
 })
 
@@ -98,7 +122,7 @@ class AppHeader extends Component {
   render() {
     const newPost = this.props.newPost
     const titles = ['That\s Hall, Folks', 'News <span class="small-title">of the</span> Hall', 'Hall Aboard!', 'The Hall Report']
-    const title = title[Math.floor(Math.random()*title.length)]
+    const title = titles[Math.floor(Math.random()*titles.length)]
     return (
       <div>
         <Flex px={[0, 2, 5]} flexWrap='wrap' mb={3} alignItems='center'>
@@ -115,7 +139,7 @@ class AppHeader extends Component {
                   className='center'
                   color='white'
                   >
-                  {title}
+                  <span dangerouslySetInnerHTML={{__html:title}} />
                 </GradientHeading>
               </Link>
             </FlyIn>

@@ -43,7 +43,7 @@ class App extends Component {
       <AppDiv pose={this.state.pose} className="App">
         <Container >
             <AppHeader newPost={this.props.newPost} />
-            {this.props.newPost ? <NewPost /> : this.props.list ? <PostList match={this.props.match} author={this.props.author} draft={this.props.draft} /> : <BlogPost match={this.props.match} draft={this.props.draft}/> }
+            {this.props.newPost ? <NewPost match={this.props.match} /> : this.props.list ? <PostList match={this.props.match} author={this.props.author} draft={this.props.draft} /> : <BlogPost match={this.props.match} draft={this.props.draft}/> }
         </Container>
       </AppDiv>
     );

@@ -7,6 +7,7 @@
 .title {
   font-family: 'Playfair Display', serif;
   text-align: center;
+  color: '#003366';
 }
 
 .small-title {
@@ -31,6 +32,47 @@
 
 .next-link {
   text-align: right;
+}
+
+.draft-status {
+  text-align: right;
+}
+
+.draft-loader {
+  margin-right: 5px;
+}
+
+.rte-box {
+  min-height: 400px;
+  margin-bottom: 20px;
+}
+
+.new-post-buttons {
+  text-align: right;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btn {
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
 }
 
 .background {
